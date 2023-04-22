@@ -1,1 +1,39 @@
-<mxfile host="Electron" modified="2023-04-20T11:36:50.634Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/20.3.0 Chrome/104.0.5112.114 Electron/20.1.3 Safari/537.36" etag="92UWpMvdOP1ffZ1VT7iv" version="20.3.0" type="device"><diagram id="zLfT-zzH2stmDpR5ujuY" name="Página-1">7VfbUtswEP2aPML4EhJ4hCTQaZMpFGZKnxhhKbaK7HVlORe+vitb8iUmIRSY6TA8ZOI9u6vLntWR3fNH8epCkjSaAWWi5zl01fPHPc9zHf8Y/zSyLpFB3y2BUHJqgmrgmj8ym2nQnFOWtQIVgFA8bYMBJAkLVAsjUsKyHTYH0Z41JSHrANcBEV30J6cqKtFjb1jjXxgPIzuzOzgpPTGxwWYnWUQoLBuQP+n5Iwmgyqd4NWJCF8/Wpcw73+KtFiZZovZJIFendzcHy4mbXQWz+5jO2NfHAzPKgojcbJhliiieKR4Qs261tsXIljwWJEHrLIi4oFOyhlxPjjnBg7XOIpD8ERJFBLpcBNAtleHWd1oR1zoTYY1KyBPKqEmao9/kuH1rm7U4xaASHipSPJ3PMoy/tBVxKmhKMmWXYlnQXkqyqJhPG0TwMMHnALOZRKBbYFstJhVbNSBT8AsGMVNyjSHWOzTkm+73HGMv615yBwaLmn1ku4aY/g2rsWuK8cGw/ALGvQ7jPe8syePJn5ynSPmg5/muU2z/LME528iCK6QOF7XZGrZ6gs1VRc4IBGAlxwkUPTPnQmxAWUoCnoTTImvc36Bdk6qLjb0oTs0EClLLK7mvmkECdm3DRtYs410ad56E57k1XPp7UnnyXky6ww4LjKJ4GROkiiCEhIhJjTbOmC5THTMFXdeiYL+ZUmtDAckV6POqYnuW2YqrW51+ODwy5i8zmn4er5rG2hoJbvi2aRQ5h96Rteu8wrKJhXKcah1HYPIjJgn9XjaOdpxzXTGTRusw7K0bmJFkXToaYVvPdAa5DNiOavvm8iEyZDv7aFAGaip2tpFkAoV20b5n3rxJ/M5xD3ggUN8/1f3V6u47bXX3B3tKgtd/L03ob1H3KceNB2T0nL7foI6Ku4f4KZQJtiABgbZvRjjIO6o7Kgk42XZdVOj5N1zfAf4ad85Hu0v8vTvphXdJ9Vr89pfJUVcoIE6Zrhd8SsVrpaJ//I8vgu8nFfai6mjFpYTFsy+CKWS8owWKxSk8kf60ciyYmDG6KRl4PDclA1HJVQwjIqnOgC1yUovcRxOU6nT+F4qCZv3ZWvgaH//+5C8=</diagram></mxfile>
+<mxfile host="app.diagrams.net" modified="2023-04-22T18:54:05.078Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36" etag="7nQqMkd-1r9NNHwgESgV" version="21.2.1" type="device">
+  <diagram id="zLfT-zzH2stmDpR5ujuY" name="Página-1">
+    <mxGraphModel dx="1050" dy="573" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="aQA_T-wE1sQcMbmdMeJz-1" value="Estatísticas" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;" parent="1" vertex="1">
+          <mxGeometry x="470" y="200" width="170" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="aQA_T-wE1sQcMbmdMeJz-2" value="PK numEstatistica&#xa;FK numProva&#xa;FK - numLicencaC&#xa;+posicao&#xa;+tempoProva&#xa;+velMax&#xa;+velMedia&#xa;+calorias&#xa;+ritmoCardMax&#xa;+ritmoCardMedio&#xa;+sprints_ganhos&#xa;+montanhas_ganhas&#xa;&#xa;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;" parent="aQA_T-wE1sQcMbmdMeJz-1" vertex="1">
+          <mxGeometry y="30" width="170" height="210" as="geometry" />
+        </mxCell>
+        <mxCell id="aQA_T-wE1sQcMbmdMeJz-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=ERoneToMany;startFill=0;endArrow=ERmandOne;endFill=0;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" parent="1" source="aQA_T-wE1sQcMbmdMeJz-2" target="aQA_T-wE1sQcMbmdMeJz-16" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="350" y="122.5" as="sourcePoint" />
+            <mxPoint x="680" y="345" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aQA_T-wE1sQcMbmdMeJz-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;startArrow=ERmandOne;startFill=0;endArrow=ERoneToMany;endFill=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" parent="1" source="aQA_T-wE1sQcMbmdMeJz-4" target="aQA_T-wE1sQcMbmdMeJz-2" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="450" y="330" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="aQA_T-wE1sQcMbmdMeJz-3" value="Ciclista" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;" parent="1" vertex="1">
+          <mxGeometry x="220" y="200" width="160" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="aQA_T-wE1sQcMbmdMeJz-4" value="PK numLicenca&#xa;+nome&#xa;+Total_km&#xa;+Total_elevacao&#xa;+Maior_distancia&#xa;+Maior_elevacao&#xa;+Total_vitorias" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;" parent="aQA_T-wE1sQcMbmdMeJz-3" vertex="1">
+          <mxGeometry y="30" width="160" height="210" as="geometry" />
+        </mxCell>
+        <mxCell id="aQA_T-wE1sQcMbmdMeJz-15" value="Competição" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;" parent="1" vertex="1">
+          <mxGeometry x="750" y="200" width="160" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="aQA_T-wE1sQcMbmdMeJz-16" value="PK numProva&#xa;+nomeProva&#xa;+km_prova&#xa;+elevacao_prova&#xa;+cidade_prova&#xa;+pais_prova&#xa;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;" parent="aQA_T-wE1sQcMbmdMeJz-15" vertex="1">
+          <mxGeometry y="30" width="160" height="210" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
