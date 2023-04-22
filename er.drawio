@@ -1,20 +1,14 @@
-<mxfile host="app.diagrams.net" modified="2023-04-22T18:54:05.078Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36" etag="7nQqMkd-1r9NNHwgESgV" version="21.2.1" type="device">
+<mxfile host="app.diagrams.net" modified="2023-04-22T19:17:24.737Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36" etag="0Q8soGM46ZMJsTn5jqZo" version="21.2.1" type="device">
   <diagram id="zLfT-zzH2stmDpR5ujuY" name="Página-1">
     <mxGraphModel dx="1050" dy="573" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
         <mxCell id="aQA_T-wE1sQcMbmdMeJz-1" value="Estatísticas" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;" parent="1" vertex="1">
-          <mxGeometry x="470" y="200" width="170" height="240" as="geometry" />
+          <mxGeometry x="470" y="200" width="170" height="280" as="geometry" />
         </mxCell>
-        <mxCell id="aQA_T-wE1sQcMbmdMeJz-2" value="PK numEstatistica&#xa;FK numProva&#xa;FK - numLicencaC&#xa;+posicao&#xa;+tempoProva&#xa;+velMax&#xa;+velMedia&#xa;+calorias&#xa;+ritmoCardMax&#xa;+ritmoCardMedio&#xa;+sprints_ganhos&#xa;+montanhas_ganhas&#xa;&#xa;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;" parent="aQA_T-wE1sQcMbmdMeJz-1" vertex="1">
-          <mxGeometry y="30" width="170" height="210" as="geometry" />
-        </mxCell>
-        <mxCell id="aQA_T-wE1sQcMbmdMeJz-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=ERoneToMany;startFill=0;endArrow=ERmandOne;endFill=0;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" parent="1" source="aQA_T-wE1sQcMbmdMeJz-2" target="aQA_T-wE1sQcMbmdMeJz-16" edge="1">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="350" y="122.5" as="sourcePoint" />
-            <mxPoint x="680" y="345" as="targetPoint" />
-          </mxGeometry>
+        <mxCell id="aQA_T-wE1sQcMbmdMeJz-2" value="PK numEstatistica&#xa;FK - numLicenca&#xa;+anoProva&#xa;+numEtapa&#xa;+posicao&#xa;+km_prova&#xa;+elevacao_prova&#xa;+tempoProva&#xa;+velMax&#xa;+velMedia&#xa;+calorias&#xa;+ritmoCardMax&#xa;+ritmoCardMedio&#xa;+sprints_ganhos&#xa;+montanhas_ganhas&#xa;&#xa;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;" parent="aQA_T-wE1sQcMbmdMeJz-1" vertex="1">
+          <mxGeometry y="30" width="170" height="250" as="geometry" />
         </mxCell>
         <mxCell id="aQA_T-wE1sQcMbmdMeJz-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;startArrow=ERmandOne;startFill=0;endArrow=ERoneToMany;endFill=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" parent="1" source="aQA_T-wE1sQcMbmdMeJz-4" target="aQA_T-wE1sQcMbmdMeJz-2" edge="1">
           <mxGeometry relative="1" as="geometry">
@@ -25,12 +19,6 @@
           <mxGeometry x="220" y="200" width="160" height="240" as="geometry" />
         </mxCell>
         <mxCell id="aQA_T-wE1sQcMbmdMeJz-4" value="PK numLicenca&#xa;+nome&#xa;+Total_km&#xa;+Total_elevacao&#xa;+Maior_distancia&#xa;+Maior_elevacao&#xa;+Total_vitorias" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;" parent="aQA_T-wE1sQcMbmdMeJz-3" vertex="1">
-          <mxGeometry y="30" width="160" height="210" as="geometry" />
-        </mxCell>
-        <mxCell id="aQA_T-wE1sQcMbmdMeJz-15" value="Competição" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;" parent="1" vertex="1">
-          <mxGeometry x="750" y="200" width="160" height="240" as="geometry" />
-        </mxCell>
-        <mxCell id="aQA_T-wE1sQcMbmdMeJz-16" value="PK numProva&#xa;+nomeProva&#xa;+km_prova&#xa;+elevacao_prova&#xa;+cidade_prova&#xa;+pais_prova&#xa;" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;" parent="aQA_T-wE1sQcMbmdMeJz-15" vertex="1">
           <mxGeometry y="30" width="160" height="210" as="geometry" />
         </mxCell>
       </root>
