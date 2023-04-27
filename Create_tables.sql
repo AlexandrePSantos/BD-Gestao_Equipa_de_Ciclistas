@@ -1,12 +1,12 @@
 create DATABASE estatisticasVoltaPT;
 
--- Criacao da tabela Cliente
+-- Criacao da tabela tipoEst
 CREATE TABLE tipoEst (
     IdTipo int PRIMARY KEY IDENTITY(1,1),
 	tipo varchar(25)
 );
 
--- Criacao da tabela Conta
+-- Criacao da tabela etapa
 CREATE TABLE etapa (
     IdEtapa int PRIMARY KEY IDENTITY(1,1),
 	numEtapa int,
@@ -15,7 +15,7 @@ CREATE TABLE etapa (
     loc_chegada varchar(25)
 );
 
--- Criacao da tabela titular conta
+-- Criacao da tabela ciclista
 CREATE TABLE ciclista(
     Idcilista int PRIMARY KEY IDENTITY(1,1),
     nome varchar(25),
@@ -26,7 +26,7 @@ CREATE TABLE ciclista(
     total_vitorias int
 );
 
--- Criacao da tabela movimentos
+-- Criacao da tabela estatistica
 CREATE TABLE estatistica(
     IdEstatistica int PRIMARY KEY IDENTITY(1,1),
     Idcilista int ,
