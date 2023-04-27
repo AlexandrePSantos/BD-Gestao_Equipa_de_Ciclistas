@@ -1,3 +1,5 @@
+create DATABASE estatisticasVoltaPT;
+
 -- Criacao da tabela Cliente
 CREATE TABLE tipoEst (
     IdTipo int PRIMARY KEY IDENTITY(1,1),
@@ -21,7 +23,7 @@ CREATE TABLE ciclista(
     total_elevacao decimal(15,1),
     maior_distancia decimal(10,1),
     maior_elevacao decimal(10,1),
-    total_vitorias decimal(15,1)
+    total_vitorias int
 );
 
 -- Criacao da tabela movimentos
