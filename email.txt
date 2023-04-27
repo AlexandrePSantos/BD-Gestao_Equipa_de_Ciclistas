@@ -1,0 +1,37 @@
+Para enviar uma notificação por e-mail em T-SQL, você precisará configurar o Database Mail no seu servidor SQL e, em seguida, usar o procedimento armazenado "sp_send_dbmail" para enviar o e-mail.
+
+Aqui está um exemplo de como configurar o Database Mail e enviar um e-mail usando o "sp_send_dbmail":
+
+Configurar o Database Mail:
+EXECUTE msdb.dbo.sysmail_configure_sp
+@enable_dbmail = 1;
+
+EXECUTE msdb.dbo.sysmail_add_account_sp
+@account_name = 'MyMailAccount',
+@email_address = 'myemail@example.com',
+@display_name = 'My Email Account',
+@mail_server_name = 'mail.example.com',
+@username = 'myusername',
+@password = 'mypassword';
+
+EXECUTE msdb.dbo.sysmail_add_profile_sp
+@profile_name = 'MyMailProfile',
+@description = 'Profile used to send emails';
+
+EXECUTE msdb.dbo.sysmail_add_profileaccount_sp
+@profile_name = 'MyMailProfile',
+@account_name = 'MyMailAccount',
+@sequence_number = 1;
+
+Enviar um e-mail usando o "sp_send_dbmail":
+DECLARE @subject VARCHAR(100) = 'Assunto do email';
+DECLARE @body VARCHAR(MAX) = 'Corpo do email';
+DECLARE @recipients VARCHAR(100) = 'destinatario1@example.com, destinatario2@example.com';
+
+EXECUTE msdb.dbo.sp_send_dbmail
+@profile_name = 'MyMailProfile',
+@recipients = @recipients,
+@subject = @subject,
+@body = @body;
+
+Certifique-se de que a conta de e-mail configurada tenha permissão para enviar e-mails e que os endereços de e-mail fornecidos sejam válidos. Além disso, certifique-se de que o serviço do Database Mail esteja em execução.
