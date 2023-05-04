@@ -9,3 +9,4 @@ insert into tipoEst (tipo) values ('Ritmo cardiaco maximo');
 insert into tipoEst (tipo) values ('Ritmo cardiaco medio');
 insert into tipoEst (tipo) values ('Sprints ganhos');
 insert into tipoEst (tipo) values ('Montanhas ganhas');
+insert into tipoEst (tipo) values ('Quedas durante a prova');
