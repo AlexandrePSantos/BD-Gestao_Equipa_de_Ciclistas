@@ -98,8 +98,6 @@ insert into etapa (numEtapa, anoEtapa, loc_partida, loc_chegada) values (16, 200
 insert into etapa (numEtapa, anoEtapa, loc_partida, loc_chegada) values (17, 2009, 'MOÛTIERS', 'COURCHEVEL');
 insert into etapa (numEtapa, anoEtapa, loc_partida, loc_chegada) values (18, 2009, 'MOIRANS-EN-MONTAGNE', 'BOURG-EN-BRESSE');
 insert into etapa (numEtapa, anoEtapa, loc_partida, loc_chegada) values (19, 2009, 'BELFORT', 'POLIGNY');
-
-
 insert into etapa (numEtapa, anoEtapa, loc_partida, loc_chegada) values (0, 2010, 'BILBAO', 'BILBAO');
 insert into etapa (numEtapa, anoEtapa, loc_partida, loc_chegada) values (1, 2010, 'VITORIA-GASTEIZ', 'SAN SEBASTIÁN');
 insert into etapa (numEtapa, anoEtapa, loc_partida, loc_chegada) values (2, 2010, 'AMOREBIETA-ETXANO', 'BAYONNE');
