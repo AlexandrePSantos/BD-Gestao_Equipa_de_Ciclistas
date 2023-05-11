@@ -29,7 +29,7 @@ CREATE TABLE ciclista(
 -- Criacao da tabela estatistica
 CREATE TABLE estatistica(
     IdEstatistica int PRIMARY KEY IDENTITY(1,1),
-    Idcilista int ,
+    Idciclista int ,
     IdEtapa int ,
     IdTipo int ,
     valor decimal(15,1),
