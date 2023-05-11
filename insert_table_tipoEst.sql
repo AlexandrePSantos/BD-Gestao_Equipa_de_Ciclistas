@@ -9,7 +9,7 @@ insert into tipoEst (tipo) values ('Calorias'); -- 2500 a 5000
 insert into tipoEst (tipo) values ('Ritmo cardiaco maximo'); -- 180 a 200
 insert into tipoEst (tipo) values ('Ritmo cardiaco medio'); -- 160 a 180
 insert into tipoEst (tipo) values ('Sprints ganhos'); -- 1 a 4
-insert into tipoEst (tipo) values ('Montanhas ganhas');
-insert into tipoEst (tipo) values ('Quedas durante a prova');
-insert into tipoEst (tipo) values ('Troca de bicicleta');
-insert into tipoEst (tipo) values ('Troca de rodas');
+insert into tipoEst (tipo) values ('Montanhas ganhas'); -- 1 a 4
+insert into tipoEst (tipo) values ('Quedas durante a prova'); -- 0 a 2 
+insert into tipoEst (tipo) values ('Troca de bicicleta'); -- 0 a 2
+insert into tipoEst (tipo) values ('Troca de rodas');  -- 0 a 5
