@@ -1,6 +1,7 @@
 insert into tipoEst (tipo) values ('Posicao');
 insert into tipoEst (tipo) values ('Km prova');
-insert into tipoEst (tipo) values ('Elevacao prova');
+insert into tipoEst (tipo) values ('Acumulado positivo');
+insert into tipoEst (tipo) values ('Acumulado negativo');
 insert into tipoEst (tipo) values ('Tempo prova');
 insert into tipoEst (tipo) values ('Velocidade maxima');
 insert into tipoEst (tipo) values ('Velocidade media');
@@ -10,3 +11,5 @@ insert into tipoEst (tipo) values ('Ritmo cardiaco medio');
 insert into tipoEst (tipo) values ('Sprints ganhos');
 insert into tipoEst (tipo) values ('Montanhas ganhas');
 insert into tipoEst (tipo) values ('Quedas durante a prova');
+insert into tipoEst (tipo) values ('Troca de bicicleta');
+insert into tipoEst (tipo) values ('Troca de rodas');
