@@ -75,3 +75,41 @@ pagina 15 tarefa 5
 
 -SSRS elabore um relat´orio com gr´afico e registos em tabela
 ultima parte da tarefa
+
+
+
+-- Criação do procedimento armazenado para envio de e-mail
+CREATE PROCEDURE EnviarEmail
+    @Destinatario varchar(100),
+    @Assunto varchar(100),
+    @Corpo varchar(max)
+AS
+BEGIN
+    -- Configuração das variáveis para o e-mail
+    DECLARE @ProfileName varchar(50) = 'DatabaseMailProfile'
+    DECLARE @BodyFormat varchar(20) = 'HTML'
+    DECLARE @MailSubject varchar(200) = @Assunto
+    DECLARE @MailBody varchar(max) = @Corpo
+    DECLARE @MailRecipients varchar(max) = @Destinatario
+
+    -- Envio do e-mail
+    EXEC msdb.dbo.sp_send_dbmail
+        @profile_name = @ProfileName,
+        @recipients = @MailRecipients,
+        @subject = @MailSubject,
+        @body = @MailBody,
+        @body_format = @BodyFormat;
+END
+
+-- Criação do trigger para enviar e-mail após inserção de um novo registro
+CREATE TRIGGER EnviarEmailAposInsercao
+ON SuaTabela
+AFTER INSERT
+AS
+BEGIN
+    DECLARE @Destinatario varchar(100) = 'exemplo@email.com'
+    DECLARE @Assunto varchar(100) = 'Novo registro inserido'
+    DECLARE @Corpo varchar(max) = 'Um novo registro foi inserido na tabela.'
+
+    EXEC EnviarEmail @Destinatario, @Assunto, @Corpo;
+END
