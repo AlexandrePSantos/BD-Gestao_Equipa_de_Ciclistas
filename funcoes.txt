@@ -1,0 +1,77 @@
+-function
+retornar a idade consuante a data de nascimento
+retornar o numero de vitorias 
+
+-view 
+apresentar todos os podios de um corredor com todos os dados dessa todos os dados dessa prova
+apresentar as informacoes das etapas de um certo anoEtapa
+
+-procedimento 
+classificar o corredor como trepador mais de 150 vitorias de montanha, velocista 150 vitorias de sprint
+
+-cursor read only
+fazer como se fosse uma classificacao de uma prova
+
+-cursor (update)
+se corredor tiver vitoria na contagem de montanha tirar 2 decimas ao tempo, se for vitoria de sprint tirar 1 decima
+
+-trigger que seja disparado
+atualizar os dados do ciclista
+
+-trigger de validacao
+validacao das posicoes 
+
+-procedimento que dever´a validar
+caso tente inserir para 11 ciclistas retorna erro pois só existem 10
+caso tente inserir mais estatísticas do que as que existem dá erro
+
+ -3 instrucoes SQL
+media de km na volta toda/ano
+soma do numero de vitorias daquele ano
+
+-Aplicar o rownumber, rank, denserank e partition
+??????
+ROW_NUMBER:
+A função ROW_NUMBER() atribui um número sequencial exclusivo para cada linha retornada por uma consulta.
+
+SELECT ROW_NUMBER() OVER (ORDER BY idciclista) AS num, nome, total_km
+FROM ciclista
+Neste exemplo, estamos selecionando o número sequencial de cada ciclista, ordenado pelo id do ciclista, juntamente com o nome e o total de quilômetros percorridos pelo ciclista.
+
+RANK:
+A função RANK() atribui uma classificação a cada linha, com valores iguais recebendo a mesma classificação. Em seguida, as classificações subsequentes são puladas, por exemplo, se duas linhas tiverem o mesmo valor e receberem uma classificação de 1, a próxima linha receberá uma classificação de 3.
+
+SELECT RANK() OVER (ORDER BY total_vitorias DESC) AS ranking, nome, total_vitorias
+FROM ciclista
+Neste exemplo, estamos selecionando o ranking dos ciclistas de acordo com o número total de vitórias, juntamente com o nome e o total de vitórias.
+DENSE_RANK:
+A função DENSE_RANK() é semelhante à função RANK(), exceto que os valores iguais recebem a mesma classificação e os valores subsequentes são classificados de forma contígua, ou seja, não há lacunas nas classificações.
+
+SELECT DENSE_RANK() OVER (ORDER BY total_vitorias DESC) AS ranking, nome, total_vitorias
+FROM ciclista
+Neste exemplo, estamos selecionando o ranking dos ciclistas de acordo com o número total de vitórias, juntamente com o nome e o total de vitórias.
+
+PARTITION BY:
+A cláusula PARTITION BY é usada em conjunto com as funções de janela para agrupar as linhas por um determinado conjunto de colunas. Por exemplo, se quisermos classificar os ciclistas por equipe, podemos usar a cláusula PARTITION BY para agrupar as linhas por equipe.
+
+SELECT nome, equipe, total_km, RANK() OVER (PARTITION BY equipe ORDER BY total_km DESC) AS ranking
+FROM ciclista
+Neste exemplo, estamos selecionando o nome do ciclista, equipe, total de quilômetros percorridos pelo ciclista e o ranking do ciclista dentro de sua equipe, ordenado pelo total de quilômetros percorridos.
+
+
+
+
+-Aplicar uma situa¸c˜ao com PIVOT
+apresentar uma tabela com quantos dados metemos de cada tipo de estatistica
+
+– implementar o filestream
+Inserir dados binários numa tabela FILESTREAM --- foto de cada ciclista
+
+
+-o SQL do sistema
+pagina 15 tarefa 5
+
+
+
+-SSRS elabore um relat´orio com gr´afico e registos em tabela
+ultima parte da tarefa
