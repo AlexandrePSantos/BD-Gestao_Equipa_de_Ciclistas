@@ -17,7 +17,7 @@ CREATE TABLE etapa (
 
 -- Criacao da tabela ciclista
 CREATE TABLE ciclista(
-    Idcilista int PRIMARY KEY IDENTITY(1,1),
+    Idciclista int PRIMARY KEY IDENTITY(1,1),
     nome varchar(25),
     total_km decimal(15,1),
     total_elevacao decimal(15,1),
@@ -33,7 +33,7 @@ CREATE TABLE estatistica(
     IdEtapa int ,
     IdTipo int ,
     valor decimal(15,1),
-    CONSTRAINT FK_Idcilista FOREIGN KEY (Idcilista) REFERENCES ciclista(Idcilista),
+    CONSTRAINT FK_Idciclista FOREIGN KEY (Idciclista) REFERENCES ciclista(Idciclista),
     CONSTRAINT FK_IdEtapa FOREIGN KEY (IdEtapa) REFERENCES etapa(IdEtapa),
     CONSTRAINT FK_IdTipo FOREIGN KEY (IdTipo) REFERENCES tipoEst(IdTipo)
 );
