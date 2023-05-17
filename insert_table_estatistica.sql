@@ -1,1 +1,0 @@
-insert into estatistica (idCiclista, idEtapa, idTipo, valor) values ();
