@@ -2,31 +2,32 @@
 retornar o numero de vitorias 
 
 -view 
-apresentar todos os podios de um corredor com todos os dados dessa todos os dados dessa prova
+apresentar todos os podios de um corredor com todos os dados dessa todos os dados dessa prova --> fiz mas nao parece estar muito complexo
 apresentar as informacoes das etapas de um certo anoEtapa
 
 -procedimento --> FEITO
 classificar o corredor como trepador mais de 10 vitorias de montanha, velocista 10 vitorias de sprint por ano
 
--cursor read only
+-cursor read only --> FEITO
 fazer como se fosse uma classificacao de uma prova
 
 -cursor (update)
 se corredor tiver vitoria na contagem de montanha tirar 2 decimas ao tempo, se for vitoria de sprint tirar 1 decima
 
--trigger que seja disparado
+-trigger que seja disparado --> ver nao esta muito certo na sei como fazer os ifs
 atualizar os dados do ciclista
 
 -trigger de validacao
 validacao das posicoes 
 
--procedimento que dever´a validar
+-procedimento que dever´a validar --> feito
 caso tente inserir para 11 ciclistas retorna erro pois só existem 10
 caso tente inserir mais estatísticas do que as que existem dá erro
 
  -3 instrucoes SQL
-media de km na volta toda/ano
-soma do numero de vitorias daquele ano
+media de km na volta toda/ano --> feito
+soma do numero de vitorias daquele ano --> feito
+apresenta  a media de km de cada etapa durante os anos todos --> verificar se esta certa
 
 -Aplicar o rownumber, rank, denserank e partition
 ROW_NUMBER: --> FEITO
