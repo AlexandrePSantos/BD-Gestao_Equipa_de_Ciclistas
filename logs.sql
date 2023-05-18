@@ -69,8 +69,8 @@ BEGIN
         SET @operacao = 'DELETE'
     
     INSERT INTO LogInteracoes (Tabela, Operacao, DataHora, Utilizador, idRegisto)
-    SELECT 'tipoEst', @operacao, GETDATE(), SUSER_SNAME(), IdEtapa FROM inserted UNION ALL
-    SELECT 'tipoEst', @operacao, GETDATE(), SUSER_SNAME(), IdEtapa FROM deleted
+    SELECT 'etapa', @operacao, GETDATE(), SUSER_SNAME(), IdEtapa FROM inserted UNION ALL
+    SELECT 'etapa', @operacao, GETDATE(), SUSER_SNAME(), IdEtapa FROM deleted
 END
 
 -- estatistica
@@ -90,6 +90,6 @@ BEGIN
         SET @operacao = 'DELETE'
     
     INSERT INTO LogInteracoes (Tabela, Operacao, DataHora, Utilizador, idRegisto)
-    SELECT 'tipoEst', @operacao, GETDATE(), SUSER_SNAME(), IdEstatistica FROM inserted UNION ALL
-    SELECT 'tipoEst', @operacao, GETDATE(), SUSER_SNAME(), IdEstatistica FROM deleted
+    SELECT 'estatistica', @operacao, GETDATE(), SUSER_SNAME(), IdEstatistica FROM inserted UNION ALL
+    SELECT 'estatistica', @operacao, GETDATE(), SUSER_SNAME(), IdEstatistica FROM deleted
 END
