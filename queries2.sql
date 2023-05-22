@@ -1,9 +1,11 @@
 --------------
 -- Instruções SQL --
 -- 1. media de km na volta toda/ano 
-SELECT anoEtapa, AVG(total_km) AS media_km
-FROM etapa
-GROUP BY anoEtapa;
+SELECT e.anoEtapa, AVG(c.total_km) AS media_km
+FROM ciclista c
+JOIN estatistica est ON c.Idciclista = est.Idciclista
+JOIN etapa e ON est.IdEtapa = e.IdEtapa
+GROUP BY e.anoEtapa;
 
 -- 2. soma do numero de vitorias daquele ano
 SELECT c.Idciclista, c.nome, SUM(CASE WHEN e.valor = 1 AND e.IdTipo = 1 THEN 1 ELSE 0 END) AS NumVitorias
@@ -11,24 +13,38 @@ FROM estatistica e
 INNER JOIN ciclista c ON e.Idciclista = c.Idciclista
 GROUP BY c.Idciclista, c.nome;
 
--- 3. apresenta  a media de km de cada etapa durante os anos todos --- corrigir
-SELECT e.IdEtapa, e.numEtapa, AVG(est.valor) AS media_km
+-- 3. apresenta  a media de km de cada etapa durante os anos todos
+SELECT e.numEtapa, AVG(est.valor) AS media_km
 FROM etapa e
 INNER JOIN estatistica est ON e.IdEtapa = est.IdEtapa
 WHERE est.IdTipo = 2
-GROUP BY e.IdEtapa, e.numEtapa;
+GROUP BY e.numEtapa;
 
 --------------
--- Views -- apresentar todos os podios de um corredor com todos os dados dessa todos os dados dessa prova 
---- nao esta a apresentar todos os dados e nao sei se esta muito complexa
-CREATE VIEW InformacoesCorrida AS
-SELECT e.IdEtapa, e.numEtapa, e.anoEtapa, e.loc_partida, e.loc_chegada
-FROM etapa e
-INNER JOIN estatistica est ON e.IdEtapa = est.IdEtapa
-WHERE est.IdTipo = 1 AND est.valor = 1 AND est.Idciclista = 5;
+-- View -- 
+-- 1º -> criar user WebAPP com permissão de leitura (SELECT) apenas:
+CREATE LOGIN WebAPP WITH PASSWORD = '123456';
+CREATE USER WebAPP FOR LOGIN WebAPP;
+-- 2º -> view:
+CREATE VIEW PodiosCorredores AS
+SELECT Corredor, numEtapa, anoEtapa, loc_partida, loc_chegada, TipoEstatistica, ValorEstatistica
+FROM (
+    SELECT c.nome AS Corredor, e.numEtapa, e.anoEtapa, e.loc_partida, e.loc_chegada, t.tipo 
+    AS TipoEstatistica, es.valor AS ValorEstatistica,
+    ROW_NUMBER() OVER (PARTITION BY c.nome, e.numEtapa ORDER BY c.nome, e.numEtapa) AS RowNumber
+    FROM ciclista c
+    JOIN estatistica es ON c.Idciclista = es.Idciclista
+    JOIN etapa e ON es.IdEtapa = e.IdEtapa
+    JOIN tipoEst t ON es.IdTipo = t.IdTipo
+) AS Podios
+WHERE RowNumber <= 3;
+
+SELECT * from PodiosCorredores;
+
+GRANT SELECT ON PodiosCorredores TO WebAPP;
 
 --------------
--- Triggers -- corrigir
+-- Triggers --
 -- Disparado
 CREATE TRIGGER soma_valores
 ON estatistica
@@ -45,13 +61,34 @@ BEGIN
     INNER JOIN inserted i ON c.IdCiclista = i.IdCiclista
 END
 
--- Validação --!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+-- Validação 
+CREATE TRIGGER validacao_insert
+ON estatistica
+BEFORE INSERT
+AS
+BEGIN
+    -- Verificar se os campos estão vazios
+    IF EXISTS (
+        SELECT 1
+        FROM inserted
+        WHERE Idciclista IS NULL OR IdEtapa IS NULL OR IdTipo IS NULL OR valor IS NULL
+              OR Idciclista = '' OR IdEtapa = '' OR IdTipo = '' OR valor = ''
+    )
+    BEGIN
+        RAISERROR ('Todos os campos devem ser preenchidos.', 16, 1);
+        ROLLBACK TRANSACTION;
+        RETURN;
+    END;
 
+    -- Inserir os dados válidos na tabela
+    INSERT INTO estatistica (Idciclista, IdEtapa, IdTipo, valor)
+    SELECT Idciclista, IdEtapa, IdTipo, valor
+    FROM inserted;
+END
 
 --------------
--- Cursores --
+-- Cursores -- tem erros nas horas
 -- READ ONLY
-DECLARE @Horas INT, @Minutos INT, @Segundos INT;
 DECLARE @Posicao VARCHAR(25);
 DECLARE @AnoEtapa decimal(4);
 DECLARE @numEtapa int;
@@ -61,33 +98,61 @@ DECLARE @TempoProva DECIMAL(10,2);
 DECLARE Clas_ciclista CURSOR FOR
 SELECT TC.nome, TP.numEtapa, TP.anoEtapa, TE.valor
 FROM estatistica TE
-INNER JOIN ciclista TC ON TE.Idciclista = TC.Idciclista;
+INNER JOIN ciclista TC ON TE.Idciclista = TC.Idciclista
 INNER JOIN etapa TP ON TE.IdEtapa = TP.IdEtapa;
 
 OPEN Clas_ciclista
-FETCH NEXT FROM Clas_ciclista INTO @Horas, @Minutos, @Segundos, @Posicao, @AnoEtapa, @numEtapa, @Nome, @TempoProva
+FETCH NEXT FROM Clas_ciclista INTO @Nome, @numEtapa, @AnoEtapa, @TempoProva
 
 WHILE @@FETCH_STATUS = 0
 BEGIN
-
+    DECLARE @Horas INT, @Minutos INT;
+    
     SET @Horas = FLOOR(@TempoProva / 60);
-    SET @Minutos = FLOOR((@TempoProva / 60) % 60);
+    SET @Minutos = FLOOR(@TempoProva % 60);
 
-    PRINT '  POSICAO  |  ANO PROVA  |  NUMERO ETAPA  |  NOME                   |  TEMPO PROVA  '
-    PRINT '--------------------------------------------------------------------------------------'
-    PRINT '  ' + @Posicao + REPLICATE(' ', 9 - LEN(@Posicao)) + '|  ' + @AnoEtapa + REPLICATE(' ', 11 - LEN(@AnoEtapa)) + '|  ' + @numEtapa + REPLICATE(' ', 14 - LEN(@numEtapa)) + '|  ' + @Nome + REPLICATE(' ', 23 - LEN(@Nome)) + '|  ' + RIGHT('00' + CONVERT(VARCHAR(2), @Horas), 2) + ':' + RIGHT('00' + CONVERT(VARCHAR(2), @Minutos), 2)
+    SELECT '  POSICAO  |  ANO PROVA  |  NUMERO ETAPA  |  NOME                   |  TEMPO PROVA  '
+    UNION ALL
+    SELECT '--------------------------------------------------------------------------------------'
+    UNION ALL
+    SELECT '  ' + @Posicao + REPLICATE(' ', 9 - LEN(@Posicao)) + '|  ' + CONVERT(VARCHAR(4), @AnoEtapa) + REPLICATE(' ', 11 - LEN(CONVERT(VARCHAR(4), @AnoEtapa))) + '|  ' + CONVERT(VARCHAR(2), @numEtapa) + REPLICATE(' ', 14 - LEN(CONVERT(VARCHAR(2), @numEtapa))) + '|  ' + @Nome + REPLICATE(' ', 23 - LEN(@Nome)) + '|  ' + RIGHT('00' + CONVERT(VARCHAR(2), @Horas), 2) + ':' + RIGHT('00' + CONVERT(VARCHAR(2), @Minutos), 2)
 
-    FETCH NEXT FROM Clas_ciclista INTO @Horas, @Minutos, @Segundos, @Posicao, @AnoEtapa, @numEtapa, @Nome, @TempoProva
+    FETCH NEXT FROM Clas_ciclista INTO @Nome, @numEtapa, @AnoEtapa, @TempoProva
 END
 
 CLOSE Clas_ciclista
 DEALLOCATE Clas_ciclista
 
--- UPDATE --!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-...
+-- UPDATE -- atualizar a tabela ciclista 
+DECLARE @Idciclista INT;
+DECLARE @Valor DECIMAL(15, 1);
 
---------------
--- Functions --
+DECLARE cursorAtualizar CURSOR FOR
+SELECT Idciclista, valor
+FROM estatistica;
+
+OPEN cursorAtualizar;
+
+FETCH NEXT FROM cursorAtualizar INTO @Idciclista, @Valor;
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+    UPDATE ciclista
+    SET total_km = total_km + @Valor,
+        total_elevacao = total_elevacao + @Valor,
+        maior_distancia = CASE WHEN @Valor > maior_distancia THEN @Valor ELSE maior_distancia END,
+        maior_elevacao = CASE WHEN @Valor > maior_elevacao THEN @Valor ELSE maior_elevacao END,
+        total_vitorias = total_vitorias + 1
+    WHERE Idciclista = @Idciclista;
+
+    FETCH NEXT FROM cursorAtualizar INTO @Idciclista, @Valor;
+END;
+
+CLOSE cursorAtualizar;
+DEALLOCATE cursorAtualizar;
+
+-------------- 
+-- Function -- 
 CREATE FUNCTION calcularVitorias(@idCiclista INT)
 RETURNS INT
 AS
@@ -111,8 +176,82 @@ FROM ciclista
 WHERE IdCiclista = @idCiclista;
 
 --------------
--- SP's -- --!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+-- SP's -- 
+-- Inserir
+CREATE PROCEDURE sp_InserirDados
+    @nome varchar(25),
+    @total_km decimal(15,1),
+    @total_elevacao decimal(15,1),
+    @maior_distancia decimal(10,1),
+    @maior_elevacao decimal(10,1),
+    @total_vitorias int
+AS
+BEGIN
+    INSERT INTO ciclista (nome, total_km, total_elevacao, maior_distancia, maior_elevacao, total_vitorias)
+    VALUES (@nome, @total_km, @total_elevacao, @maior_distancia, @maior_elevacao, @total_vitorias);
+END
 
+-- Atualizar
+CREATE PROCEDURE sp_AtualizarDados
+    @IdCiclista int,
+    @nome varchar(25),
+    @total_km decimal(15,1),
+    @total_elevacao decimal(15,1),
+    @maior_distancia decimal(10,1),
+    @maior_elevacao decimal(10,1),
+    @total_vitorias int
+AS
+BEGIN
+    UPDATE ciclista
+    SET nome = @nome,
+        total_km = @total_km,
+        total_elevacao = @total_elevacao,
+        maior_distancia = @maior_distancia,
+        maior_elevacao = @maior_elevacao,
+        total_vitorias = @total_vitorias
+    WHERE IdCiclista = @IdCiclista;
+END
+
+-- Apagar
+CREATE PROCEDURE sp_RemoverDados
+    @IdCiclista int
+AS
+BEGIN
+    DELETE FROM ciclista
+    WHERE IdCiclista = @IdCiclista;
+END
+
+-- Controle de Transação e Tratamento de Erros
+CREATE PROCEDURE sp_TransacaoExemplo
+    @IdEtapa int,
+    @IdCiclista int,
+    @IdTipo int,
+    @valor decimal(15, 1)
+AS
+BEGIN
+    BEGIN TRANSACTION;
+
+    BEGIN TRY
+        -- Inserir dados na tabela estatistica
+        INSERT INTO estatistica (IdEtapa, IdCiclista, IdTipo, valor)
+        VALUES (@IdEtapa, @IdCiclista, @IdTipo, @valor);
+
+        -- Atualizar dados na tabela ciclista
+        UPDATE ciclista
+        SET total_km = total_km + @valor,
+            total_vitorias = total_vitorias + 1
+        WHERE IdCiclista = @IdCiclista;
+
+        COMMIT;
+    END TRY
+    BEGIN CATCH
+        -- Lidar com erros
+        IF @@TRANCOUNT > 0
+            ROLLBACK;
+
+        THROW;
+    END CATCH;
+END
 
 ------------------
 -- Procedimentos -- está a classificar sempre como trepador pois os dados são demasiado semelhantes mas funciona
@@ -125,7 +264,8 @@ BEGIN
     CREATE TABLE #Classificacoes (
         IdCiclista INT,
         AnoEtapa DECIMAL(4,0),
-        Tipo VARCHAR(20)
+        Trepador VARCHAR(3),
+        Velocista VARCHAR(3)
     );
 
     DECLARE @AnoEtapa DECIMAL(4,0);
@@ -133,14 +273,11 @@ BEGIN
 
     WHILE @AnoEtapa IS NOT NULL
     BEGIN
-        INSERT INTO #Classificacoes (IdCiclista, AnoEtapa, Tipo)
+        INSERT INTO #Classificacoes (IdCiclista, AnoEtapa, Trepador, Velocista)
         SELECT c.IdCiclista,
             @AnoEtapa,
-            CASE
-                WHEN montanhas.Cnt > 5 THEN 'Trepador'
-                WHEN sprints.Cnt > 5 THEN 'Velocista'
-                ELSE 'Normal'
-            END
+            CASE WHEN montanhas.Cnt > 5 THEN 'Sim' ELSE 'Não' END,
+            CASE WHEN sprints.Cnt > 5 THEN 'Sim' ELSE 'Não' END
         FROM ciclista c
         LEFT JOIN (
             SELECT es.IdCiclista, COUNT(*) AS Cnt
@@ -160,7 +297,7 @@ BEGIN
         SET @AnoEtapa = (SELECT MIN(anoEtapa) FROM etapa WHERE anoEtapa > @AnoEtapa);
     END;
 
-    SELECT c.nome, cl.AnoEtapa, cl.Tipo
+    SELECT c.nome, cl.AnoEtapa, cl.Trepador, cl.Velocista
     FROM ciclista c
     LEFT JOIN #Classificacoes cl ON c.IdCiclista = cl.IdCiclista
     ORDER BY cl.AnoEtapa DESC;
@@ -168,7 +305,7 @@ BEGIN
     DROP TABLE #Classificacoes;
 END;
 
-exec classificarCiclistasPorAno;
+EXEC classificarCiclistasPorAno;
 
 -- validar
 CREATE PROCEDURE validar_insercao_estatistica
@@ -216,24 +353,28 @@ PIVOT
 ) AS pivoted;
 
 ------------------
--- ROW_NUMBER --
-SELECT ROW_NUMBER() OVER (ORDER BY idciclista) AS num, nome, total_km
-FROM ciclista
+-- ROW_NUMBER -- numerar linhas sequencialmente
+SELECT ROW_NUMBER() OVER (ORDER BY Idciclista) AS Numeracao, *
+FROM ciclista;
 
 ------------------
--- RANK --
-SELECT RANK() OVER (ORDER BY total_vitorias DESC) AS ranking, nome, total_vitorias
-FROM ciclista
+-- RANK --  numerar linhas sequencialmente
+SELECT RANK() OVER (ORDER BY total_km DESC) AS Classificacao, *
+FROM ciclista;
 
 ------------------
--- DENSE_RANK --
-SELECT DENSE_RANK() OVER (ORDER BY total_vitorias DESC) AS ranking, nome, total_vitorias
-FROM ciclista
+-- DENSE_RANK -- obter a classificação dos ciclistas por total_vitorias
+SELECT DENSE_RANK() OVER (ORDER BY total_vitorias DESC) AS Classificacao, *
+FROM ciclista;
 
 ------------------
--- PARTITION BY --
-SELECT nome, equipe, total_km, RANK() OVER (PARTITION BY equipe ORDER BY total_km DESC) AS ranking
-FROM ciclista
+-- PARTITION BY -- obter a classificação dos ciclistas por anoEtapa
+SELECT c.*, RANK() OVER (PARTITION BY e.anoEtapa ORDER BY c.total_km DESC) AS Classificacao
+FROM ciclista c
+INNER JOIN estatistica est ON c.Idciclista = est.Idciclista
+INNER JOIN etapa e ON est.IdEtapa = e.IdEtapa;
+
+
 
 
 
