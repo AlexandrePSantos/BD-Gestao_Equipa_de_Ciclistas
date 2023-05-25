@@ -111,7 +111,7 @@ BEGIN
     SET @Horas = FLOOR(@TempoProva / 60);
     SET @Minutos = FLOOR(@TempoProva % 60);
 
-    SELECT '  POSICAO  |  ANO PROVA  |  NUMERO ETAPA  |  NOME                   |  TEMPO PROVA  '
+    SELECT '  POSICAO  |  ANO PROVA  |  NUMERO ETAPA  |  NOME   |  TEMPO PROVA  '
     UNION ALL
     SELECT '--------------------------------------------------------------------------------------'
     UNION ALL
@@ -241,20 +241,18 @@ BEGIN
         SET total_km = total_km + @valor,
             total_vitorias = total_vitorias + 1
         WHERE IdCiclista = @IdCiclista;
-
         COMMIT;
     END TRY
     BEGIN CATCH
         -- Lidar com erros
         IF @@TRANCOUNT > 0
             ROLLBACK;
-
         THROW;
     END CATCH;
 END
 
 ------------------
--- Procedimentos -- está a classificar sempre como trepador pois os dados são demasiado semelhantes mas funciona
+-- Procedimentos -- classificar como trepador e velocista
 CREATE PROCEDURE classificarCiclistasPorAno
 AS
 BEGIN
@@ -339,18 +337,11 @@ END
 exec validar_insercao_estatistica;
 
 ------------------
--- PIVOT --
+-- PIVOT -- calcular a média de valores de estatistica por tipo para cada ciclista com pivot
 SELECT *
-FROM
-(
-    SELECT IdTipo
-    FROM estatistica
-) AS src
-PIVOT
-(
-    COUNT(IdTipo)
-    FOR IdTipo IN ([1], [2], [3], [4], [5], [6], [7], [8], [9], [10], [11], [12], [13], [14], [15]) 
-) AS pivoted;
+FROM (SELECT Idciclista, IdTipo, valor FROM estatistica) AS src
+PIVOT (AVG(valor) FOR IdTipo IN ([1], [2], [3], [4], [5], [6], [7], [8], [9], [10], [11], [12], [13], [14], [15])) AS pivoted
+ORDER BY Idciclista;
 
 ------------------
 -- ROW_NUMBER -- numerar linhas sequencialmente
@@ -368,14 +359,42 @@ SELECT DENSE_RANK() OVER (ORDER BY total_vitorias DESC) AS Classificacao, *
 FROM ciclista;
 
 ------------------
--- PARTITION BY -- obter a classificação dos ciclistas por anoEtapa
-SELECT c.*, RANK() OVER (PARTITION BY e.anoEtapa ORDER BY c.total_km DESC) AS Classificacao
+-- PARTITION BY -- obter a média das estatísticas por tipo para cada ciclista e ano
+SELECT c.nome, e.anoEtapa, te.tipo, AVG(es.valor) AS media_valor
 FROM ciclista c
-INNER JOIN estatistica est ON c.Idciclista = est.Idciclista
-INNER JOIN etapa e ON est.IdEtapa = e.IdEtapa;
+INNER JOIN estatistica es ON c.Idciclista = es.Idciclista
+INNER JOIN etapa e ON es.IdEtapa = e.IdEtapa
+INNER JOIN tipoEst te ON es.IdTipo = te.IdTipo
+GROUP BY c.nome, e.anoEtapa, te.tipo
+ORDER BY e.anoEtapa, c.nome, te.tipo;
+
+.-.-.-.-.-.-.-.-.-.-.-.
+-- FEITOS NA TAREFA --
+.-.-.-.-.-.-.-.-.-.-.-.
+
+Sobre uma qualquer instru¸c˜ao SQL do sistema(dever´a ter algum ”peso”na
+execu¸c˜ao), fa¸ca a sua an´alise com o Execution Plan guardando prints, use
+o Database Engine Tuning Advisor para analisar e aplicar recomenda¸c˜oes.
+Volte a analisar para tirar conclus˜oes
+• Construa um Database Maintenance, demonstr´avel, que reorganize Dados
+e ´Indices, valide a Integridade de dados, fa¸ca uma c´opia de seguran¸ca da
+Base de Dados mantendo um hist´orico de 1 Mˆes e que ocorra todos os
+dias `as 01:00H. ´E importante notificar ainda o Administrador da Base de
+Dados do estado da execu¸c˜ao (Com Sucesso ou Falha) atrav´es do envio de
+um email.
 
 
+.-.-.-.-.-.-.-.
+-- OPCIONAIS --
+.-.-.-.-.-.-.-.
 
+-- Procedimento que insira numa tabela baseado num formato JSON --
+
+-- Procedimento que retorna e transforme um conjunto de dados de uma tabela num formato JSON --
+
+-- Procedimento/trigger que inclua notifica¸c˜ao por email (TSQL) --
+
+--
 
 
 
