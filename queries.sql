@@ -372,16 +372,20 @@ ORDER BY e.anoEtapa, c.nome, te.tipo;
 -- FEITOS NA TAREFA --
 .-.-.-.-.-.-.-.-.-.-.-.
 
-Sobre uma qualquer instru¸c˜ao SQL do sistema(dever´a ter algum ”peso”na
-execu¸c˜ao), fa¸ca a sua an´alise com o Execution Plan guardando prints, use
-o Database Engine Tuning Advisor para analisar e aplicar recomenda¸c˜oes.
-Volte a analisar para tirar conclus˜oes
-• Construa um Database Maintenance, demonstr´avel, que reorganize Dados
-e ´Indices, valide a Integridade de dados, fa¸ca uma c´opia de seguran¸ca da
-Base de Dados mantendo um hist´orico de 1 Mˆes e que ocorra todos os
-dias `as 01:00H. ´E importante notificar ainda o Administrador da Base de
-Dados do estado da execu¸c˜ao (Com Sucesso ou Falha) atrav´es do envio de
-um email.
+-- Fazer análise de uma consulta mais pesada com Execution Plan;
+-- Com o Database Engine Tuning Advisor analisar e aplicar recomendações;
+-- Voltar a analisar para tirar conclusões;
+
+
+-- Construir um Database Maintenance, demonstrável, que reorganize Dados
+-- e Indices, valide a Integridade de dados, faça uma cópia de segurança da
+-- Base de Dados mantendo um histórico de 1 mês e que ocorra todos os
+-- dias às 01:00H. Notificar ainda o Administrador da Base de Dados 
+-- do estado da execução (Com Sucesso ou Falha) através do envio de um email.
+
+-- Com SSRS elaborar um relatório com gráfico e registos em tabela, será
+-- valorizado a análise e a qualidade da informação apresentada
+
 
 
 .-.-.-.-.-.-.-.
@@ -390,11 +394,17 @@ um email.
 
 -- Procedimento que insira numa tabela baseado num formato JSON --
 
+
 -- Procedimento que retorna e transforme um conjunto de dados de uma tabela num formato JSON --
+
 
 -- Procedimento/trigger que inclua notifica¸c˜ao por email (TSQL) --
 
---
+
+-- Realize uma c´opia da base dados e importe para uma cloud com
+-- sql server ou ent˜ao podem implementar a base dados em Mysql,Oracle ou
+-- Postgres, com o Execution Plan compare o desempenho de uma instru¸c˜ao.
+-- Tire conclus˜oes.
 
 
 
