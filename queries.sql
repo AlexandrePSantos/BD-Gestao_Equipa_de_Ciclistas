@@ -405,11 +405,6 @@ ORDER BY e.anoEtapa, c.nome, te.tipo;
 -- Procedimento/trigger que inclua notifica¸c˜ao por email (TSQL) --
 
 
--- Realize uma c´opia da base dados e importe para uma cloud com
--- sql server ou ent˜ao podem implementar a base dados em Mysql,Oracle ou
--- Postgres, com o Execution Plan compare o desempenho de uma instru¸c˜ao.
--- Tire conclus˜oes.
-
 
 
 
