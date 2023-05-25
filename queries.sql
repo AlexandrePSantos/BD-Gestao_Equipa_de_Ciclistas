@@ -372,6 +372,10 @@ ORDER BY e.anoEtapa, c.nome, te.tipo;
 -- FEITOS NA TAREFA --
 .-.-.-.-.-.-.-.-.-.-.-.
 
+-- implementar o filestream incluindo procedimentos de inserção
+-- Create table for filestream
+
+
 -- Fazer análise de uma consulta mais pesada com Execution Plan;
 -- Com o Database Engine Tuning Advisor analisar e aplicar recomendações;
 -- Voltar a analisar para tirar conclusões;
