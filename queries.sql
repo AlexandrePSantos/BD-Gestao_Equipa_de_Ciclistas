@@ -429,8 +429,6 @@ OPENROWSET(BULK N'C:\Users\ruijo\OneDrive\Documentos\GitHub\Trab.Pratico\ciclist
 -- FEITOS NA TAREFA --
 .-.-.-.-.-.-.-.-.-.-.-.
 
-
-
 -- Fazer análise de uma consulta mais pesada com Execution Plan;
 -- Com o Database Engine Tuning Advisor analisar e aplicar recomendações;
 -- Voltar a analisar para tirar conclusões;
