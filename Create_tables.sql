@@ -37,3 +37,11 @@ CREATE TABLE estatistica(
     CONSTRAINT FK_IdEtapa FOREIGN KEY (IdEtapa) REFERENCES etapa(IdEtapa),
     CONSTRAINT FK_IdTipo FOREIGN KEY (IdTipo) REFERENCES tipoEst(IdTipo)
 );
+
+-- Restrições de integridade
+-- estatistica
+ALTER table estatistica
+ADD valor decimal(15,1) CHECK (valor > 0);
+
+ALTER table estatistica
+ADD IdTipo INT CHECK (valor > 0 and <= 16);
