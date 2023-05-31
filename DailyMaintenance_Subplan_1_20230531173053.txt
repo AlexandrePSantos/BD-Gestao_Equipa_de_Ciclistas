@@ -1,0 +1,83 @@
+Microsoft(R) Server Maintenance Utility (Unicode) Version 16.0.1050
+Report was generated on "ALEXANDRE\EI24585".
+Maintenance Plan: DailyMaintenance
+Duration: 00:00:01
+Status: Succeeded.
+Details:
+Check Database Integrity (ALEXANDRE\EI24585)
+Check Database integrity on Local server connection
+Databases: estatisticasVoltaPT
+Include indexes
+Physical only
+Task start: 2023-05-31T17:30:52.
+Task end: 2023-05-31T17:30:52.
+Success
+Command:DBCC CHECKDB(N''estatisticasVoltaPT'')  WITH  PHYSICAL_ONLY
+
+GO
+
+
+Reorganize Index (ALEXANDRE\EI24585)
+Reorganize index on Local server connection
+Databases: estatisticasVoltaPT
+Object: Tables and views
+Compact large objects
+Task start: 2023-05-31T17:30:53.
+Task end: 2023-05-31T17:30:53.
+Success
+Command:USE [estatisticasVoltaPT]
+GO
+ALTER INDEX [PK__LogInter__E5A902515D26A934] ON [dbo].[LogInteracoes] REORGANIZE  WITH ( LOB_COMPACTION = ON )
+
+GO
+
+
+Update Statistics (ALEXANDRE\EI24585)
+Update Statistics on Local server connection
+Databases: estatisticasVoltaPT
+Object: Tables and views
+All existing statistics
+Task start: 2023-05-31T17:30:53.
+Task end: 2023-05-31T17:30:53.
+Success
+Command:use [estatisticasVoltaPT]
+GO
+UPDATE STATISTICS [dbo].[ciclista] 
+WITH FULLSCAN
+GO
+use [estatisticasVoltaPT]
+GO
+UPDATE STATISTICS [dbo].[estatistica] 
+WITH FULLSCAN
+GO
+use [estatisticasVoltaPT]
+GO
+UPDATE STATISTICS [dbo].[etapa] 
+WITH FULLSCAN
+GO
+use [estatisticasVoltaPT]
+GO
+UPDATE STATISTICS [dbo].[LogInteracoes] 
+WITH FULLSCAN
+GO
+use [estatisticasVoltaPT]
+GO
+UPDATE STATISTICS [dbo].[tipoEst] 
+WITH FULLSCAN
+
+GO
+
+
+Back Up Database (Full) (ALEXANDRE\EI24585)
+Backup Database on Local server connection
+Databases: estatisticasVoltaPT
+Type: Full
+Append existing
+Task start: 2023-05-31T17:30:53.
+Task end: 2023-05-31T17:30:53.
+Success
+Command:BACKUP DATABASE [estatisticasVoltaPT] TO  DISK = N''C:\tarefa5\estatisticasVoltaPT_backup_2023_05_31_173053_6457882.bak'' WITH NOFORMAT, NOINIT,  NAME = N''estatisticasVoltaPT_backup_2023_05_31_173053_6457882'', SKIP, REWIND, NOUNLOAD,  STATS = 10
+
+GO
+
+
