@@ -456,7 +456,18 @@ OPENROWSET(BULK N'C:\Users\ruijo\OneDrive\Documentos\GitHub\Trab.Pratico\ciclist
 
 
 -- Procedimento/trigger que inclua notifica¸c˜ao por email (TSQL) --
+-- Criar o trigger para enviar a notificação por email após a inserção em uma tabela
+CREATE TRIGGER SendEmailNotificationTrigger
+ON YourTable
+AFTER INSERT
+AS
+BEGIN
+    DECLARE @RecipientEmail NVARCHAR(255) = 'recipient@example.com'
+    DECLARE @Subject NVARCHAR(255) = 'Nova inserção na tabela'
+    DECLARE @Body NVARCHAR(MAX) = 'Uma nova linha foi inserida na tabela.'
 
+    EXEC SendNotificationEmail @RecipientEmail, @Subject, @Body;
+END
 
 
 
