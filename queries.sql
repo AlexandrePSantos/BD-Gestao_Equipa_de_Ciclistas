@@ -430,9 +430,30 @@ OPENROWSET(BULK N'C:\Users\ruijo\OneDrive\Documentos\GitHub\Trab.Pratico\ciclist
 .-.-.-.-.-.-.-.-.-.-.-.
 
 -- Fazer análise de uma consulta mais pesada com Execution Plan;
+USE estatisticasVoltaPT;
+GO
+
+SELECT c.Idciclista,
+       c.nome,
+       e.IdEtapa,
+       e.numEtapa,
+       e.anoEtapa,
+       t.IdTipo,
+       t.tipo,
+       AVG(est.valor) AS MediaEstatistica
+FROM ciclista c
+JOIN estatistica est ON c.Idciclista = est.Idciclista
+JOIN etapa e ON est.IdEtapa = e.IdEtapa
+JOIN tipoEst t ON est.IdTipo = t.IdTipo
+GROUP BY c.Idciclista, c.nome, e.IdEtapa, e.numEtapa, e.anoEtapa, t.IdTipo, t.tipo
+ORDER BY e.anoEtapa, c.Idciclista;
+
+GO 40
+
 -- Com o Database Engine Tuning Advisor analisar e aplicar recomendações;
 -- Voltar a analisar para tirar conclusões;
 
+DONE - PRINTS
 
 -- Construir um Database Maintenance, demonstrável, que reorganize Dados
 -- e Indices, valide a Integridade de dados, faça uma cópia de segurança da
