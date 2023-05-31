@@ -461,6 +461,8 @@ DONE - PRINTS
 -- dias às 01:00H. Notificar ainda o Administrador da Base de Dados 
 -- do estado da execução (Com Sucesso ou Falha) através do envio de um email.
 
+DONE - PRINTS
+
 -- Com SSRS elaborar um relatório com gráfico e registos em tabela, será
 -- valorizado a análise e a qualidade da informação apresentada
 
