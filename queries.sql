@@ -89,39 +89,49 @@ END
 --------------
 -- Cursores -- tem erros nas horas
 -- READ ONLY
-DECLARE @Posicao VARCHAR(25);
-DECLARE @AnoEtapa decimal(4);
-DECLARE @numEtapa int;
+DECLARE @AnoEtapa DECIMAL(4);
+DECLARE @NumEtapa INT;
 DECLARE @Nome VARCHAR(30);
 DECLARE @TempoProva DECIMAL(10,2);
+DECLARE @Horas INT;
+DECLARE @Minutos INT;
 
-DECLARE Clas_ciclista CURSOR FOR
-SELECT TC.nome, TP.numEtapa, TP.anoEtapa, TE.valor
+DECLARE @Result TABLE (
+    AnoEtapa DECIMAL(4),
+    NumEtapa INT,
+    Nome VARCHAR(30),
+    TempoProva VARCHAR(5)
+)
+
+DECLARE Clas_ciclista CURSOR LOCAL STATIC READ_ONLY FOR
+SELECT TP.anoEtapa,
+       TP.numEtapa,
+       TC.nome,
+       TE.valor
 FROM estatistica TE
 INNER JOIN ciclista TC ON TE.Idciclista = TC.Idciclista
-INNER JOIN etapa TP ON TE.IdEtapa = TP.IdEtapa;
+INNER JOIN etapa TP ON TE.IdEtapa = TP.IdEtapa
+WHERE TE.IdTipo = 5
+ORDER BY TP.anoEtapa, TP.numEtapa, TC.nome;
 
 OPEN Clas_ciclista
-FETCH NEXT FROM Clas_ciclista INTO @Nome, @numEtapa, @AnoEtapa, @TempoProva
+FETCH NEXT FROM Clas_ciclista INTO @AnoEtapa, @NumEtapa, @Nome, @TempoProva
 
 WHILE @@FETCH_STATUS = 0
 BEGIN
-    DECLARE @Horas INT, @Minutos INT;
-    
     SET @Horas = FLOOR(@TempoProva / 60);
-    SET @Minutos = FLOOR(@TempoProva % 60);
+    SET @Minutos = @TempoProva % 60;
 
-    SELECT '  POSICAO  |  ANO PROVA  |  NUMERO ETAPA  |  NOME   |  TEMPO PROVA  '
-    UNION ALL
-    SELECT '--------------------------------------------------------------------------------------'
-    UNION ALL
-    SELECT '  ' + @Posicao + REPLICATE(' ', 9 - LEN(@Posicao)) + '|  ' + CONVERT(VARCHAR(4), @AnoEtapa) + REPLICATE(' ', 11 - LEN(CONVERT(VARCHAR(4), @AnoEtapa))) + '|  ' + CONVERT(VARCHAR(2), @numEtapa) + REPLICATE(' ', 14 - LEN(CONVERT(VARCHAR(2), @numEtapa))) + '|  ' + @Nome + REPLICATE(' ', 23 - LEN(@Nome)) + '|  ' + RIGHT('00' + CONVERT(VARCHAR(2), @Horas), 2) + ':' + RIGHT('00' + CONVERT(VARCHAR(2), @Minutos), 2)
+    INSERT INTO @Result (AnoEtapa, NumEtapa, Nome, TempoProva)
+    VALUES (@AnoEtapa, @NumEtapa, @Nome, RIGHT('0' + CONVERT(VARCHAR(2), @Horas), 2) + ':' + RIGHT('0' + CONVERT(VARCHAR(2), @Minutos), 2))
 
-    FETCH NEXT FROM Clas_ciclista INTO @Nome, @numEtapa, @AnoEtapa, @TempoProva
+    FETCH NEXT FROM Clas_ciclista INTO @AnoEtapa, @NumEtapa, @Nome, @TempoProva
 END
 
 CLOSE Clas_ciclista
 DEALLOCATE Clas_ciclista
+
+SELECT * FROM @Result
 
 -- UPDATE -- atualizar a tabela ciclista 
 DECLARE @Idciclista INT;
@@ -372,6 +382,9 @@ ORDER BY e.anoEtapa, c.nome, te.tipo;
 ------------------
 -- implementar o filestream incluindo procedimentos de inserção
 -- Create database for filestream
+
+!! POR ACABAR !!
+
 CREATE DATABASE FileStreamDB
 ON
 PRIMARY ( NAME = FileStreamDB,
@@ -466,7 +479,7 @@ DONE - PRINTS
 -- Com SSRS elaborar um relatório com gráfico e registos em tabela, será
 -- valorizado a análise e a qualidade da informação apresentada
 
-
+!! POR ACABAR !!
 
 .-.-.-.-.-.-.-.
 -- OPCIONAIS --
@@ -474,12 +487,55 @@ DONE - PRINTS
 
 -- Procedimento que insira numa tabela baseado num formato JSON --
 
+CREATE PROCEDURE InsertEtapaFromJSON
+    @jsonData NVARCHAR(MAX)
+AS
+BEGIN
+    INSERT INTO etapa (numEtapa, anoEtapa, loc_partida, loc_chegada)
+    SELECT
+        JSON_VALUE(@jsonData, '$.numEtapa'),
+        JSON_VALUE(@jsonData, '$.anoEtapa'),
+        JSON_VALUE(@jsonData, '$.loc_partida'),
+        JSON_VALUE(@jsonData, '$.loc_chegada');
+END;
+
+DECLARE @jsonData NVARCHAR(MAX) = '
+{
+  "numEtapa": 0,
+  "anoEtapa": 2024,
+  "loc_partida": "TESTE A",
+  "loc_chegada": "TESTE B"
+}';
+
+EXEC InsertEtapaFromJSON @jsonData;
+
+SELECT * FROM etapa where numEtapa = 1;
 
 -- Procedimento que retorna e transforme um conjunto de dados de uma tabela num formato JSON --
 
+CREATE PROCEDURE GetCiclistaDataAsJSON
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @jsonOutput NVARCHAR(MAX);
+
+    SELECT @jsonOutput = (
+        SELECT *
+        FROM ciclista
+        FOR JSON AUTO
+    );
+
+    SELECT @jsonOutput AS JsonData;
+END;
+
+EXEC GetCiclistaDataAsJSON;
 
 -- Procedimento/trigger que inclua notifica¸c˜ao por email (TSQL) --
 -- Criar o trigger para enviar a notificação por email após a inserção em uma tabela
+
+!! POR ACABAR !!
+
 CREATE TRIGGER SendEmailNotificationTrigger
 ON YourTable
 AFTER INSERT
