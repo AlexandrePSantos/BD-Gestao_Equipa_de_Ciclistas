@@ -533,22 +533,52 @@ EXEC GetCiclistaDataAsJSON;
 
 -- Procedimento/trigger que inclua notifica¸c˜ao por email (TSQL) --
 -- Criar o trigger para enviar a notificação por email após a inserção em uma tabela
-
-!! POR ACABAR !!
-
-CREATE TRIGGER SendEmailNotificationTrigger
-ON YourTable
+-- Criar o trigger
+CREATE TRIGGER trg_NotificarInsercaoCiclista
+ON ciclista
 AFTER INSERT
 AS
 BEGIN
-    DECLARE @RecipientEmail NVARCHAR(255) = 'recipient@example.com'
-    DECLARE @Subject NVARCHAR(255) = 'Nova inserção na tabela'
-    DECLARE @Body NVARCHAR(MAX) = 'Uma nova linha foi inserida na tabela.'
+    -- Variáveis para armazenar informações do novo ciclista
+    DECLARE @Nome VARCHAR(25);
+    DECLARE @TotalKm DECIMAL(15, 1);
+    DECLARE @TotalElevacao DECIMAL(15, 1);
+    DECLARE @MaiorDistancia DECIMAL(10, 1);
+    DECLARE @MaiorElevacao DECIMAL(10, 1);
+    DECLARE @TotalVitorias INT;
+    DECLARE @EmailAdmin VARCHAR(255);
+    DECLARE @Assunto VARCHAR(100);
+    DECLARE @Mensagem VARCHAR(MAX);
 
-    EXEC SendNotificationEmail @RecipientEmail, @Subject, @Body;
-END
+    -- Obter as informações do novo ciclista
+    SELECT @Nome = nome,
+           @TotalKm = total_km,
+           @TotalElevacao = total_elevacao,
+           @MaiorDistancia = maior_distancia,
+           @MaiorElevacao = maior_elevacao,
+           @TotalVitorias = total_vitorias
+    FROM inserted;
+    
+    -- Configurar informações do email
+    SET @EmailAdmin = 'alsantos@ipvc.pt'; -- endereço de email do administrador
+    SET @Assunto = 'Nova inserção na tabela ciclista';
+    SET @Mensagem = 'Foi inserido um novo ciclista na tabela ciclista:' + CHAR(13) + CHAR(10) +
+                    'Nome: ' + @Nome + CHAR(13) + CHAR(10) +
+                    'Total de KM: ' + CAST(@TotalKm AS VARCHAR(15)) + CHAR(13) + CHAR(10) +
+                    'Total de Elevação: ' + CAST(@TotalElevacao AS VARCHAR(15)) + CHAR(13) + CHAR(10) +
+                    'Maior Distância: ' + CAST(@MaiorDistancia AS VARCHAR(10)) + CHAR(13) + CHAR(10) +
+                    'Maior Elevação: ' + CAST(@MaiorElevacao AS VARCHAR(10)) + CHAR(13) + CHAR(10) +
+                    'Total de Vitórias: ' + CAST(@TotalVitorias AS VARCHAR(10));
 
+    -- Enviar o email
+    EXEC msdb.dbo.sp_send_dbmail
+        @profile_name = 'SQL Server Agent Profile TP', -- nome do perfil de email configurado no SQL Server
+        @recipients = @EmailAdmin,
+        @subject = @Assunto,
+        @body = @Mensagem;
+END;
 
+insert into ciclista values ('teste', 0, 0, 0, 0, 0);
 
 
 
