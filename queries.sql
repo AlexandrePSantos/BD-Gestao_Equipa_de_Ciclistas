@@ -322,16 +322,24 @@ CREATE PROCEDURE validar_insercao_estatistica
     @Idciclista int,
     @IdEtapa int,
     @IdTipo int ,
-    @valor decimal(15,1),
+    @valor decimal(15,1)
 AS
 BEGIN
-    DECLARE @maxIdciclista int, @maxIdTipo int;
+    DECLARE @maxIdciclista int, @maxIdEtapa int, @maxIdTipo int;
 
-    SELECT @maxIdciclista = MAX(Idciclista), @maxIdTipo = MAX(IdTipo) FROM ciclista;
+    SELECT @maxIdciclista = MAX(Idciclista) FROM ciclista;
+	SELECT @maxIdTipo = MAX(IdTipo) FROM tipoEst;
+	SELECT @maxIdEtapa = MAX(IdEtapa) FROM etapa;
 
     IF @Idciclista > @maxIdciclista
     BEGIN
         RAISERROR ('Erro: O Idciclista especificado não existe.', 16, 1);
+        RETURN;
+    END
+
+    IF @IdEtapa > @maxIdEtapa
+    BEGIN
+        RAISERROR ('Erro: O IdEtapa especificado não existe.', 16, 1);
         RETURN;
     END
 
@@ -341,12 +349,15 @@ BEGIN
         RETURN;
     END
 
-    insert into estatistica (idciclista, idEtapa, idTipo, valor) values (@Idciclista, @IdEtapa, @IdTipo, @valor);
+    INSERT INTO estatistica (Idciclista, IdEtapa, IdTipo, valor) VALUES (@Idciclista, @IdEtapa, @IdTipo, @valor);
 
     PRINT 'Dados inseridos com sucesso.';
-END
+END;
 
-exec validar_insercao_estatistica;
+--Erro
+EXEC validar_insercao_estatistica @Idciclista = 1, @IdEtapa = 1, @IdTipo = 31, @valor = 10.5;
+--Sucesso
+EXEC validar_insercao_estatistica @Idciclista = 1, @IdEtapa = 1, @IdTipo = 1, @valor = 10.5;
 
 ------------------
 -- PIVOT -- calcular a média de valores de estatistica por tipo para cada ciclista com pivot
