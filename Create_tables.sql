@@ -1,4 +1,15 @@
-create DATABASE estatisticasVoltaPT;
+CREATE DATABASE estatisticasVoltaPT
+ON
+PRIMARY ( NAME = estatisticasVoltaPT,
+      FILENAME = 'C:\abdtrabalho\estatisticasVoltaPT.mdf'),
+      FILEGROUP estatisticasVoltaPTFS CONTAINS FILESTREAM(
+      NAME = estatisticasVoltaPTFS,
+    FILENAME = 'C:\abdtrabalho\estatisticasVoltaPTFS')
+LOG ON (                        
+      NAME = estatisticasVoltaPTLOG,
+    FILENAME = 'C:\abdtrabalho\estatisticasVoltaPTLOG.ldf')
+GO
+
 
 -- Criacao da tabela tipoEst
 CREATE TABLE tipoEst (
@@ -40,11 +51,8 @@ CREATE TABLE estatistica(
 
 -- Restrições de integridade
 -- estatistica
-ALTER table estatistica
-ADD valor decimal(15,1) CHECK (valor > 0);
+ALTER TABLE estatistica
+ADD CHECK (valor > 0);
 
-ALTER table estatistica
-ADD IdTipo INT CHECK (valor > 0);
-
-ALTER table estatistica
-ADD IdTipo INT CHECK (valor < 17);
+ALTER TABLE estatistica
+ADD CHECK (IdTipo > 0 AND IdTipo < 17);

@@ -382,60 +382,45 @@ ORDER BY e.anoEtapa, c.nome, te.tipo;
 ------------------
 -- implementar o filestream incluindo procedimentos de inserção
 -- Create database for filestream
-
-!! POR ACABAR !!
-
-CREATE DATABASE FileStreamDB
-ON
-PRIMARY ( NAME = FileStreamDB,
-      FILENAME = 'C:\Users\ruijo\OneDrive\Documentos\GitHub\Trab.Pratico\BDFilestream\FileStreamDB.mdf'),
-      FILEGROUP FileStreamDBFS CONTAINS FILESTREAM(
-      NAME = FileStreamDBFS,
-    FILENAME = 'C:\Users\ruijo\OneDrive\Documentos\GitHub\Trab.Pratico\BDFilestream\FileStreamDBFS')
-LOG ON (                        
-      NAME = FileStreamDBLOG,
-    FILENAME = 'C:\Users\ruijo\OneDrive\Documentos\GitHub\Trab.Pratico\BDFilestream\FileStreamDBLOG.ldf')
-GO
-
--- A especificação da palavra-chave CONTAINS FILESTREAM como parte da instrução CREATE DATABASE ativa o suporte ao FILESTREAM para esta base de dados.
-
 -- Create table for filestream
-CREATE TABLE [dbo].[FileStreamTable](
-   [FSID] UNIQUEIDENTIFIER ROWGUIDCOL NOT NULL UNIQUE,
-   [FSDescription] VARCHAR(50),
-   [FSBLOB] VARBINARY(MAX) FILESTREAM NULL)
-
+CREATE TABLE [dbo].[FileStreamTablevoltaPT](
+    [Idciclista] INT,
+    [FSID] UNIQUEIDENTIFIER ROWGUIDCOL NOT NULL UNIQUE,
+    [FSDescription] VARCHAR(50),
+    [FSBLOB] VARBINARY(MAX) FILESTREAM NULL,
+    FOREIGN KEY (Idciclista) REFERENCES ciclista(Idciclista)
+);
 
 -- Inserir dados binários numa tabela FILESTREAM
-INSERT into dbo.FileStreamTable VALUES ( newid(), 'Ciclista_1',(select * from
-OPENROWSET(BULK N'C:\Users\ruijo\OneDrive\Documentos\GitHub\Trab.Pratico\ciclistas\ciclista_1.jpg',SINGLE_BLOB) as FS))
+INSERT into dbo.FileStreamTablevoltaPT VALUES ( 1, newid(), 'Ciclista_1',(select * from
+OPENROWSET(BULK N'C:\ciclistas\ciclista_1.jpg',SINGLE_BLOB) as FS))
 
-INSERT into dbo.FileStreamTable VALUES ( newid(), 'Ciclista_2',(select * from
-OPENROWSET(BULK N'C:\Users\ruijo\OneDrive\Documentos\GitHub\Trab.Pratico\ciclistas\ciclista_2.jpg',SINGLE_BLOB) as FS))
+INSERT into dbo.FileStreamTablevoltaPT VALUES ( 2, newid(), 'Ciclista_2',(select * from
+OPENROWSET(BULK N'C:\ciclistas\ciclista_2.jpg',SINGLE_BLOB) as FS))
 
-INSERT into dbo.FileStreamTable VALUES ( newid(), 'Ciclista_3',(select * from
-OPENROWSET(BULK N'C:\Users\ruijo\OneDrive\Documentos\GitHub\Trab.Pratico\ciclistas\ciclista_3.jpg',SINGLE_BLOB) as FS))
+INSERT into dbo.FileStreamTablevoltaPT VALUES ( 3, newid(), 'Ciclista_3',(select * from
+OPENROWSET(BULK N'C:\ciclistas\ciclista_3.jpg',SINGLE_BLOB) as FS))
 
-INSERT into dbo.FileStreamTable VALUES ( newid(), 'Ciclista_4',(select * from
-OPENROWSET(BULK N'C:\Users\ruijo\OneDrive\Documentos\GitHub\Trab.Pratico\ciclistas\ciclista_4.jpg',SINGLE_BLOB) as FS))
+INSERT into dbo.FileStreamTablevoltaPT VALUES ( 4, newid(), 'Ciclista_4',(select * from
+OPENROWSET(BULK N'C:\ciclistas\ciclista_4.jpg',SINGLE_BLOB) as FS))
 
-INSERT into dbo.FileStreamTable VALUES ( newid(), 'Ciclista_5',(select * from
-OPENROWSET(BULK N'C:\Users\ruijo\OneDrive\Documentos\GitHub\Trab.Pratico\ciclistas\ciclista_5.jpg',SINGLE_BLOB) as FS))
+INSERT into dbo.FileStreamTablevoltaPT VALUES ( 5, newid(), 'Ciclista_5',(select * from
+OPENROWSET(BULK N'C:\ciclistas\ciclista_5.jpg',SINGLE_BLOB) as FS))
 
-INSERT into dbo.FileStreamTable VALUES ( newid(), 'Ciclista_6',(select * from
-OPENROWSET(BULK N'C:\Users\ruijo\OneDrive\Documentos\GitHub\Trab.Pratico\ciclistas\ciclista_6.jpg',SINGLE_BLOB) as FS))
+INSERT into dbo.FileStreamTablevoltaPT VALUES ( 6, newid(), 'Ciclista_6',(select * from
+OPENROWSET(BULK N'C:\ciclistas\ciclista_6.jpg',SINGLE_BLOB) as FS))
 
-INSERT into dbo.FileStreamTable VALUES ( newid(), 'Ciclista_7',(select * from
-OPENROWSET(BULK N'C:\Users\ruijo\OneDrive\Documentos\GitHub\Trab.Pratico\ciclistas\ciclista_7.jpg',SINGLE_BLOB) as FS))
+INSERT into dbo.FileStreamTablevoltaPT VALUES ( 7, newid(), 'Ciclista_7',(select * from
+OPENROWSET(BULK N'C:\ciclistas\ciclista_7.jpg',SINGLE_BLOB) as FS))
 
-INSERT into dbo.FileStreamTable VALUES ( newid(), 'Ciclista_8',(select * from
-OPENROWSET(BULK N'C:\Users\ruijo\OneDrive\Documentos\GitHub\Trab.Pratico\ciclistas\ciclista_8.jpg',SINGLE_BLOB) as FS))
+INSERT into dbo.FileStreamTablevoltaPT VALUES ( 8, newid(), 'Ciclista_8',(select * from
+OPENROWSET(BULK N'C:\ciclistas\ciclista_8.jpg',SINGLE_BLOB) as FS))
 
-INSERT into dbo.FileStreamTable VALUES ( newid(), 'Ciclista_9',(select * from
-OPENROWSET(BULK N'C:\Users\ruijo\OneDrive\Documentos\GitHub\Trab.Pratico\ciclistas\ciclista_9.jpg',SINGLE_BLOB) as FS))
+INSERT into dbo.FileStreamTablevoltaPT VALUES (  9, newid(), 'Ciclista_9',(select * from
+OPENROWSET(BULK N'C:\ciclistas\ciclista_9.jpg',SINGLE_BLOB) as FS))
 
-INSERT into dbo.FileStreamTable VALUES ( newid(), 'Ciclista_10',(select * from
-OPENROWSET(BULK N'C:\Users\ruijo\OneDrive\Documentos\GitHub\Trab.Pratico\ciclistas\ciclista_10.jpg',SINGLE_BLOB) as FS))
+INSERT into dbo.FileStreamTablevoltaPT VALUES ( 10, newid(), 'Ciclista_10',(select * from
+OPENROWSET(BULK N'C:\ciclistas\ciclista_10.jpg',SINGLE_BLOB) as FS))
 
 
 .-.-.-.-.-.-.-.-.-.-.-.
