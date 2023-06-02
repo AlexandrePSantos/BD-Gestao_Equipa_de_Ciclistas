@@ -64,17 +64,17 @@ BEGIN
 END
 
 -- Validação 
+
 CREATE TRIGGER validacao_insert
 ON estatistica
-BEFORE INSERT
+INSTEAD OF INSERT
 AS
 BEGIN
     -- Verificar se os campos estão vazios
     IF EXISTS (
         SELECT 1
         FROM inserted
-        WHERE Idciclista IS NULL OR IdEtapa IS NULL OR IdTipo IS NULL OR valor IS NULL
-              OR Idciclista = '' OR IdEtapa = '' OR IdTipo = '' OR valor = ''
+        WHERE ISNULL(Idciclista, '') = '' OR ISNULL(IdEtapa, '') = '' OR ISNULL(IdTipo, '') = '' OR ISNULL(valor, '') = ''
     )
     BEGIN
         RAISERROR ('Todos os campos devem ser preenchidos.', 16, 1);
@@ -86,7 +86,8 @@ BEGIN
     INSERT INTO estatistica (Idciclista, IdEtapa, IdTipo, valor)
     SELECT Idciclista, IdEtapa, IdTipo, valor
     FROM inserted;
-END
+END;
+
 
 --------------
 -- Cursores -- tem erros nas horas
@@ -317,7 +318,7 @@ END;
 
 EXEC classificarCiclistasPorAno;
 
--- validar
+-- validar  da erro
 CREATE PROCEDURE validar_insercao_estatistica
     @Idciclista int,
     @IdEtapa int,
@@ -577,29 +578,3 @@ BEGIN
 END;
 
 insert into ciclista values ('teste', 0, 0, 0, 0, 0);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
