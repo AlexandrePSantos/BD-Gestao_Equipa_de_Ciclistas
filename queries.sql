@@ -1,11 +1,13 @@
 --------------
 -- Instruções SQL --
--- 1. media de km na volta toda/ano 
-SELECT e.anoEtapa, AVG(c.total_km) AS media_km
+-- 1. total de km por ciclista por ano
+SELECT c.nome, e.anoEtapa, SUM(est.valor) AS total_km
 FROM ciclista c
 JOIN estatistica est ON c.Idciclista = est.Idciclista
 JOIN etapa e ON est.IdEtapa = e.IdEtapa
-GROUP BY e.anoEtapa;
+WHERE est.IdTipo = 2
+GROUP BY c.nome, e.anoEtapa
+ORDER BY c.nome, e.anoEtapa;
 
 -- 2. soma do numero de vitorias daquele ano
 SELECT c.Idciclista, c.nome, SUM(CASE WHEN e.valor = 1 AND e.IdTipo = 1 THEN 1 ELSE 0 END) AS NumVitorias
