@@ -53,15 +53,47 @@ ON estatistica
 AFTER INSERT
 AS
 BEGIN
+    -- Atualização do total_km para cada ciclista
     UPDATE c
-    SET total_km = c.total_km + i.valor,
-        total_elevacao = c.total_elevacao + i.valor,
-        maior_distancia = CASE WHEN i.valor > c.maior_distancia THEN i.valor ELSE c.maior_distancia END,
-        maior_elevacao = CASE WHEN i.valor > c.maior_elevacao THEN i.valor ELSE c.maior_elevacao END,
-        total_vitorias = c.total_vitorias + 1
+    SET total_km = c.total_km + i.valor
     FROM ciclista c
     INNER JOIN inserted i ON c.IdCiclista = i.IdCiclista
-END
+    WHERE i.IdTipo = 2;
+
+    -- Atualização do total_elevacao para cada ciclista
+    UPDATE c
+    SET total_elevacao = c.total_elevacao + i.valor
+    FROM ciclista c
+    INNER JOIN inserted i ON c.IdCiclista = i.IdCiclista
+    WHERE i.IdTipo = 3;
+
+    -- Atualização da maior_distancia para cada ciclista
+    UPDATE c
+    SET maior_distancia = CASE
+        WHEN i.valor > c.maior_distancia THEN i.valor
+        ELSE c.maior_distancia
+    END
+    FROM ciclista c
+    INNER JOIN inserted i ON c.IdCiclista = i.IdCiclista
+    WHERE i.IdTipo = 2;
+
+    -- Atualização da maior_elevacao para cada ciclista
+    UPDATE c
+    SET maior_elevacao = CASE
+        WHEN i.valor > c.maior_elevacao THEN i.valor
+        ELSE c.maior_elevacao
+    END
+    FROM ciclista c
+    INNER JOIN inserted i ON c.IdCiclista = i.IdCiclista
+    WHERE i.IdTipo = 3;
+
+    -- Atualização do total_vitorias para cada ciclista
+    UPDATE c
+    SET total_vitorias = c.total_vitorias + 1
+    FROM ciclista c
+    INNER JOIN inserted i ON c.IdCiclista = i.IdCiclista
+    WHERE i.valor = 1 AND i.IdTipo = 1;
+END;
 
 -- Validação 
 
@@ -90,7 +122,7 @@ END;
 
 
 --------------
--- Cursores -- tem erros nas horas
+-- Cursores --
 -- READ ONLY
 DECLARE @AnoEtapa DECIMAL(4);
 DECLARE @NumEtapa INT;
@@ -318,7 +350,7 @@ END;
 
 EXEC classificarCiclistasPorAno;
 
--- validar  da erro
+-- validar
 CREATE PROCEDURE validar_insercao_estatistica
     @Idciclista int,
     @IdEtapa int,

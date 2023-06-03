@@ -51,8 +51,11 @@ CREATE TABLE estatistica(
 
 -- Restrições de integridade
 -- estatistica
-ALTER TABLE estatistica
-ADD CHECK (valor > 0);
+ALTER TABLE estatistica  
+ADD CONSTRAINT checkValor CHECK (valor >= 0);
 
-ALTER TABLE estatistica
-ADD CHECK (IdTipo > 0 AND IdTipo < 17);
+ALTER TABLE estatistica  
+ADD CONSTRAINT checkIdTipo1 CHECK (IdTipo > 0 );  
+
+ALTER TABLE estatistica  
+ADD CONSTRAINT checkIdTipo2 CHECK (IdTipo < 16 );  
