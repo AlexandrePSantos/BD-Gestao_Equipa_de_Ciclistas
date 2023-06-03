@@ -508,7 +508,7 @@ DECLARE @jsonData NVARCHAR(MAX) = '
 
 EXEC InsertEtapaFromJSON @jsonData;
 
-SELECT * FROM etapa where numEtapa = 1;
+SELECT * FROM etapa where numEtapa = 0;
 
 -- Procedimento que retorna e transforme um conjunto de dados de uma tabela num formato JSON --
 
